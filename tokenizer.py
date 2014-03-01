@@ -15,6 +15,8 @@
 #
 # Ajouter un type variable plutôt
 # que garder les chaines nues 
+#
+# Simplifier le parser est nécessaire ... utiliser une lib ?
 
 # Les différents types de variable nus 
 class String:

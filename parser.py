@@ -21,7 +21,9 @@ import cellule as cel
 # 			qui va modifier l'arbre 
 #			optimisations de contexte 
 #			et modification des macros !
-
+#
+# 	- Exemple : détecter les appels en fin de fonction qui ne nécessitent pas 
+# 				de copie de contexte 
 
 # Parser : 
 # transforme les tokens du tokenizer 
@@ -33,6 +35,9 @@ import cellule as cel
 #
 #
 # C'est juste un travail de conversion 
+# pour le moment ... mais on va peut-être 
+# permettre ici l'expansion de macros, 
+# la gestion des TCO etc ... 
 
 class Parser:
 	def __init__ (self):
