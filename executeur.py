@@ -3,7 +3,11 @@
 #
 # Aliaume Lopez
 #
-# Réduit un AST
+# Réduit un AST : IE celui qui exécute le code 
+# il servira de base pour la machine virtuelle
+# même si pour des raisons de simplification 
+# beaucoup de code d'évaluation est réparti
+# dans les classes de Cellule 
 #
 # Ce fichier contient les fonctions qui ne sont 
 # pas des fonctions de base des classes de Cellules 
@@ -15,7 +19,8 @@
 #	d'interfacer le code alisp
 #	avec python : comment définir
 #	de nouvelles fonctions en python
-#	simplement ... 
+#	simplement ... Et respecter le typage ?
+# 	ainsi que le nombre d'arguments 
 #
 # TODO:
 #	Fonctions avec un nombre infini
@@ -26,7 +31,8 @@
 # 	(fun x body) -> x = liste des arguments passés 
 # 	(fun (a b . c) body) -> c = liste des arguments restants
 # 	Peut-être simplement créer vararg fun (vfun) ? 
-
+#
+# 
 
 import cellule as cel
 

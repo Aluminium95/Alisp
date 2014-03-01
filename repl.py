@@ -10,6 +10,9 @@
 # avec toutes les fonctions de base
 # chargées, et on lance les commandes dedans 
 #
+#
+# !! Attention !! -- Ce code est incompatible avec Python 2 
+# la gestion des input variant entre les deux versions 
 
 try:
 	import readline # si on est sous linux ... (permet l'édition)
@@ -23,7 +26,7 @@ import cellule as cel
 
 
 contexte = cel.Contexte ()
-
+contexte.toplevel = True 
 # Ajoute les built-ins !
 exe.addBuiltInFuncs (contexte, exe.built_in_funcs)
 exe.addBuiltInMacros (contexte, exe.built_in_macros)
@@ -35,6 +38,7 @@ def parentmatch (text):
 	"""
 	par = 0
 	acc = 0
+	gui = 0
 	
 	for i in text:
 		if i == "(":
@@ -45,8 +49,10 @@ def parentmatch (text):
 			acc += 1
 		elif i == "}":
 			acc -= 1
+		elif i == "\"":
+			gui += 1
 	
-	if par == 0 and acc == 0:
+	if par == 0 and acc == 0 and gui % 2 == 0:
 		return True
 	else:
 		return False
@@ -67,6 +73,4 @@ while True:
 		buf = ""
 		prompt = "> "
 	else: # sinon on attend les parenthèses supplémentaires 
-		prompt = "... > "
-		
-		
+		prompt = "... > "		

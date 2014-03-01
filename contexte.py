@@ -36,6 +36,8 @@ class Contexte:
 		return self.bindings[symbole]
 	
 	def fusion (self, other):
+		# une petite optimisation : si on ajoute
+		# rien ... pas besoin de copier !
 		if other.nbrbinds == 0:
 			return self
 		
