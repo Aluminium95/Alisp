@@ -18,6 +18,8 @@
 #
 # Simplifier le parser est nécessaire ... utiliser une lib ?
 
+# !! AJOUTER UN NOUVEAU MODE : commentaire !
+
 # Les différents types de variable nus 
 class String:
 	def __init__ (self, valeur):
