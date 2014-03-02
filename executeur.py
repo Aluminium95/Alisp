@@ -36,6 +36,11 @@
 
 import cellule as cel
 
+# import des fonctions et macros de base 
+from Builtin.fonctionsbasiques import *
+from Builtin.macrosbasiques import *
+from Builtin.macrosavancees import * 
+
 def varlist (contexte):
 	""" Sort la liste des variables 
 		et leur valeur dans le contexte 
@@ -48,76 +53,12 @@ def varlist (contexte):
 	
 	d.dico = a
 	return d
-
-def whileloop (contexte, pred, body):
-	""" Une petite boucle while,
-		juste un predicat et un corps
-		de boucle ... On ne copie jamais le contexte !
-		C'est la l'utilite
-
-		!!! -- Ce code modifie le contexte externe passé
-		en argument !!!
-	"""
-	a = cel.Liste ([])
-	p = pred.eval (contexte)
-
-	while isinstance (p, cel.Atome) and p.pVrai () == True:
-		# Normalement, on voit ici que les 
-		# contextes sont passés par pointeurs 
-		# et que le contexte ici peut être 
-		# modifié par le body ! (dans un appel 
-		# normal de fonction on ferait une copie 
-		# de contexte)
-		a = body.eval (contexte)
-		p = pred.eval (contexte)
-
-	return a
 	
-def bodyRun (contexte, *l):
-	"""
-		Lance tout les arguments 
-		et retourne la valeur du 
-		dernier 
-	"""
-	return l[-1]
-
-def quote (contexte, e):
-	""" 
-		Retourne l'expression 
-		telle quelle 
-	"""
-	return e
-
-def createList (contexte, *l):
-	""" Crée une liste """
-	c = cel.Liste (list (l))
-	return c
-
-def createLambda (contexte, args, body):
-	""" Crée une fonction ! """
-	c = cel.Lambda (cel.Contexte (contexte), args, body)
-	return c
-
-def createMacro (contexte, args, body):
-	""" Crée une macro """
-	return cel.Macro (cel.Contexte (contexte), args, body) # syntaxe spéciale ? quote unquote ?
-
-def addToList (contexte, e, l):
-	return cel.Liste (l + [e])
-
-def define (contexte, v, e):
-	e = eval (e, contexte)
-	contexte.set (v, e)
-	
-def condition (contexte, question, vrai, fausse):
-	q = question.eval (contexte)
-	if isinstance (q,cel.Erreur):
-		return q
-	else:			
-		if q.vrai ().nom == "true": 
-			return vrai.eval (contexte)
-		else:
-			return fausse.eval (contexte)
+def let (contexte, variable, valeur, body):
+	valeur = valeur.eval (contexte)
+	ctx = cel.Contexte (contexte) # crée un nouveau contexte
+	ctx.set (variable, valeur)
+	return body.eval (ctx)
 
 def et (contexte, *propositions):
 	for i in propositions:
@@ -163,67 +104,6 @@ def errtype (contexte, err):
 		return err.tp
 	else:
 		return cel.Erreur (cel.Atome ("InvalidArgument"), cel.String ("..."))
-
-# TODO: Créer un matcheur déstructurant ! (type ocaml/haskell)
-def match (contexte, variable, dico):
-	# 
-	# ---- Faire un match structurel !
-	# 		: permettre des variables 	
-	# 		: permettre des 
-	variable = variable.eval (contexte)
-	
-	# une putain de grosse fonction qui fait un match sur des valeurs 
-	for i in dico.dico: # pour chaque clef on teste si on matche 
-		if variable.__eq__ (i):
-			return dico.dico[i]
-	return cel.Erreur (cel.Atome ("NoMatch"), variable)
-
-
-def let (contexte, variable, valeur, body):
-	valeur = valeur.eval (contexte)
-	ctx = cel.Contexte (contexte) # crée un nouveau contexte
-	ctx.set (variable, valeur)
-	return body.eval (ctx) 
-
-
-def vareval (contexte, expr):
-	return expr.eval (contexte).eval (contexte)
-
-# Codegen et codegeneval sont plutôt 
-# pénibles à utiliser pour le moment dans 
-# du code alisp ... peut-être trouver un 
-# moyen plus simple de le faire ?
-def codegen (contexte, expr):
-	""" Crée du code à partir d'une 
-		expression ... c'est à dire
-		retourne la même expression 
-		mais en remplaçant les 
-		termes qui commencent par 
-		un (replace)
-		
-		euh ... ce code plante quand utilisé 
-		de manière récursive ... 
-	"""
-	if isinstance (expr, cel.Liste):
-		if len (expr.liste) > 0:
-			if expr.liste[0] == cel.Variable ("@"):
-				if len (expr.liste) > 2:
-					l = [ i.eval (contexte) for i in expr.liste]
-					return cel.Liste (l)
-				else:
-					return expr.liste[1].eval (contexte)
-			else:
-				l = [ codegen (contexte, e) for e in expr.liste ]
-				return cel.Liste (l)
-		else:
-			return cel.Liste ([])
-	else:
-		return expr
-		
-
-def codegeneval (contexte, expr):
-	a = codegen (contexte, expr)
-	return vareval (contexte, a)
 
 def listevide (contexte, expr):
 	if isinstance (expr, cel.Liste) and len (expr.liste) == 0:
