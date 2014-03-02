@@ -218,6 +218,9 @@ class Nombre (Cellule):
 	
 	def eval (self, contexte):
 		return self
+
+	def tofloat (self):
+		return self.valeur / self.den
 	
 	def inexact (contexte, elem):
 		return Nombre (elem.valeur / elem.den)
@@ -270,10 +273,10 @@ class Nombre (Cellule):
 		return Nombre (s,d)
 	
 	def inf (contexte, a, b):
-		return Nombre.inexact (contexte, a) < Nombre.inexact (contexte, b)
+		return Atome.bool (a.tofloat () < b.tofloat ()) 
 	
 	def infeg (contexte, a, b):
-		return Nombre.inexact (contexte, a) <= Nombre.inexact (contexte, b)
+		return Atome.bool (a.tofloat () <= b.tofloat ())
 	
 	def sup (contexte, a, b):
 		return Nombre.infeg (contexte, b, a)
@@ -324,6 +327,12 @@ class Atome (Cellule):
 	
 	def eval (self, contexte):
 		return self
+	
+	def bool (b):
+		if b == True:
+			return Atome ("true")
+		else:
+			return Atome ("false")
 	
 	def __str__ (self):
 		return ":{}".format (self.nom)
