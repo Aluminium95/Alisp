@@ -11,41 +11,31 @@
 #
 # Implémente itérable
 
-# Concept :
+# L'implémentation suit la logique 
+# utilisée par Clojure pour son vecteur 
+# de même type ... 
 #
-# Un arbre avec à chaque nœud deux 
-# branches, et 
-import iterable
+# Pour le moment c'est un peu fouilli ... 
+# il faut le poser sur papier et bien 
+# le penser ... 
 
-class Vecteur (Iterable):
-	def __init__ (self):
-		self.arbre = Node (1)
-		self.nbr = 0
+
+import trie
+
+
+class Vecteur:
+	def __init__ (self, *values):
+		self.len = len (values)
+		if values != [None]:
+			self.arbre = trie.LookupTree (values)
+		else:
+			self.arbre = None
 
 	def append (self,elem):
-		self.define (self.nbr + 1, elem)
-	
-	def define (self, i, e):
-		if i > self.arbre.maximum:
-			a = Node (self.arbre.maximum * 2)
-			a.left = self.arbre
-			a.right = PartialNode (i,e)
-			self.
-		else:
+		v = Vecteur (None)
+		v.arbre = self.arbre.insert (self.len, elem)
+		v.len = self.len + 1
+		return v
 
-
-class Node:
-	def __init__ (self,m):
-		self.droite = None
-		self.gauche = None
-		self.maximum = m
-	
-	def setDroite (self, n):
-		self.droite = n 
-	
-	def setGauche (self, n):
-		self.gauche = n 
-	
-class PartialNode:
-	def __init__ (self):
-		
+	def __repr__ (self):
+		return self.arbre.__repr__ ()
