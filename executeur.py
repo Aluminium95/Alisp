@@ -49,17 +49,19 @@ def varlist (contexte):
 	d.dico = a
 	return d
 
-# FIXME : Ce code ne fonctionne pas 
-# c'est plutôt pénible et gênant ... 
 def whileloop (contexte, pred, body):
 	""" Une petite boucle while,
 		juste un predicat et un corps
 		de boucle ... On ne copie jamais le contexte !
 		C'est la l'utilite
+
+		!!! -- Ce code modifie le contexte externe passé
+		en argument !!!
 	"""
 	a = cel.Liste ([])
 	p = pred.eval (contexte)
-	while isinstance (p, cel.Atome) and p.faux ():
+
+	while isinstance (p, cel.Atome) and p.pVrai () == True:
 		# Normalement, on voit ici que les 
 		# contextes sont passés par pointeurs 
 		# et que le contexte ici peut être 
@@ -67,6 +69,8 @@ def whileloop (contexte, pred, body):
 		# normal de fonction on ferait une copie 
 		# de contexte)
 		a = body.eval (contexte)
+		p = pred.eval (contexte)
+
 	return a
 	
 def bodyRun (contexte, *l):
@@ -255,6 +259,7 @@ def filtre (contexte, fonction, liste):
 # pouvoir rendre ça dynamique ?
 built_in_macros = {
 			'fun' : createLambda,			
+			'tantque' : whileloop,
 			'macro' : createMacro,
 			'def'  : define,
 			'si' : condition,
@@ -270,7 +275,6 @@ built_in_macros = {
 built_in_funcs = {
 			'liste-variables' : varlist,
 			'body' : bodyRun,
-			'tantque' : whileloop,
 			'version' : version,
 			'liste' : createList,
 			'egal?' : cel.Cellule.egal,
