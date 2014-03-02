@@ -19,23 +19,55 @@
 # il faut le poser sur papier et bien 
 # le penser ... 
 
+# -- Les classes -- (types)
+class Node:
+	def __init__ (self,level,a,b):
+		self.level = level
+		self.droite = a
+		self.gauche = b
+	
+class Empty:
+	pass
 
-import trie
+class Leaf:
+	def __init__ (self, v):
+		self.value = v
 
+class Right:
+	def __init__ (self,level,a):
+		self.level = level
+		self.value = a
+	
+class Left:
+	def __init__ (self, level, a):
+		self.level = level
+		self.value = a
+	
 
-class Vecteur:
-	def __init__ (self, *values):
-		self.len = len (values)
-		if values != [None]:
-			self.arbre = trie.LookupTree (values)
+def va_droite (n, i):
+	if 2 << (n - 1) < i:
+		return True
+	else:
+		return False
+	
+def suppr_droite (n, i):
+	return i - (2 << (n - 1))
+
+def get (tableau, i):
+	if isinstance (tableau, Node):
+		n = tableau.level
+		if va_droite (n, i):
+			return get (tableau.gauche, suppr_droite (n,i))
 		else:
-			self.arbre = None
+			return get (tableau.droite, i)
+	elif isinstance (tableau, Left):
+		get (tableau.value, i)
+	elif isinstance (tableau, Right):
+		n = tableau.level
+		return get (tableau.value, suppr_droite (n,i))
+	elif isinstance (tableau,Leaf):
+		return tableau.value
+	else:
+		raise IndexError ("clef inexistante")
+	
 
-	def append (self,elem):
-		v = Vecteur (None)
-		v.arbre = self.arbre.insert (self.len, elem)
-		v.len = self.len + 1
-		return v
-
-	def __repr__ (self):
-		return self.arbre.__repr__ ()
