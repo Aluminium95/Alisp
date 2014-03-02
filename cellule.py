@@ -345,6 +345,18 @@ class Atome (Cellule):
 			return Atome ("true")
 		else:
 			return Atome ("false")
+	
+	def pVrai (self):
+		if self.vrai ().nom == "true":
+			return True
+		else:
+			return False
+	
+	def pFaux (self):
+		if self.vrai ().nom == "false":
+			return False
+		else:
+			return True
 
 ### -- Structures de données complexes --- 
 #
