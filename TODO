@@ -13,6 +13,12 @@ nombre d'optimisations sur le code généré.
 		  qui est le plus à même de remplir cette tâche 
 
 
+-> Regarder comment traiter les TCO
+
+-> Regarder comment étendre les macros 
+
+-> Regarder comment ne pas dupliquer du code identique (juste mettre un pointeur)
+
 ### Gestion des erreurs 
 
 Il faut permettre de biein gérer les erreurs dans le code
