@@ -24,9 +24,10 @@ import parser as par
 import executeur as exe
 import cellule as cel
 
-
+# Crée le contexte 
 contexte = cel.Contexte ()
 contexte.toplevel = True 
+
 # Ajoute les built-ins !
 exe.addBuiltInFuncs (contexte, exe.built_in_funcs)
 exe.addBuiltInMacros (contexte, exe.built_in_macros)
@@ -56,6 +57,9 @@ def parentmatch (text):
 		return True
 	else:
 		return False
+		
+		
+## --- Ici commence le vrai repl --- 
 
 t = tok.Tokenizer ()
 p = par.Parser ()

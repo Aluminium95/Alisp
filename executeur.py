@@ -48,8 +48,27 @@ def varlist (contexte):
 	
 	d.dico = a
 	return d
-	
 
+# FIXME : Ce code ne fonctionne pas 
+# c'est plutôt pénible et gênant ... 
+def whileloop (contexte, pred, body):
+	""" Une petite boucle while,
+		juste un predicat et un corps
+		de boucle ... On ne copie jamais le contexte !
+		C'est la l'utilite
+	"""
+	a = cel.Liste ([])
+	p = pred.eval (contexte)
+	while isinstance (p, cel.Atome) and p.faux ():
+		# Normalement, on voit ici que les 
+		# contextes sont passés par pointeurs 
+		# et que le contexte ici peut être 
+		# modifié par le body ! (dans un appel 
+		# normal de fonction on ferait une copie 
+		# de contexte)
+		a = body.eval (contexte)
+	return a
+	
 def bodyRun (contexte, *l):
 	"""
 		Lance tout les arguments 
@@ -141,6 +160,7 @@ def errtype (contexte, err):
 	else:
 		return cel.Erreur (cel.Atome ("InvalidArgument"), cel.String ("..."))
 
+# TODO: Créer un matcheur déstructurant ! (type ocaml/haskell)
 def match (contexte, variable, dico):
 	# 
 	# ---- Faire un match structurel !
@@ -154,15 +174,21 @@ def match (contexte, variable, dico):
 			return dico.dico[i]
 	return cel.Erreur (cel.Atome ("NoMatch"), variable)
 
+
 def let (contexte, variable, valeur, body):
 	valeur = valeur.eval (contexte)
 	ctx = cel.Contexte (contexte) # crée un nouveau contexte
 	ctx.set (variable, valeur)
 	return body.eval (ctx) 
-	
+
+
 def vareval (contexte, expr):
 	return expr.eval (contexte).eval (contexte)
-	
+
+# Codegen et codegeneval sont plutôt 
+# pénibles à utiliser pour le moment dans 
+# du code alisp ... peut-être trouver un 
+# moyen plus simple de le faire ?
 def codegen (contexte, expr):
 	""" Crée du code à partir d'une 
 		expression ... c'est à dire
@@ -202,8 +228,12 @@ def listevide (contexte, expr):
 		return cel.Atome ("false")
 	
 def version (contexte, *expr):
-	return cel.Atome ("alpha-1")
+	return cel.Atome ("alpha-2")
 
+# TODO : ne pas faire ces fonctions sur 
+# des listes mais sur des éléments itérables 
+# et retourner des générateurs ! (économies 
+# de ressources)
 def mape (contexte, fonction, liste):
 	l = []
 	for i in liste.liste:
@@ -240,6 +270,7 @@ built_in_macros = {
 built_in_funcs = {
 			'liste-variables' : varlist,
 			'body' : bodyRun,
+			'tantque' : whileloop,
 			'version' : version,
 			'liste' : createList,
 			'egal?' : cel.Cellule.egal,
@@ -262,13 +293,18 @@ built_in_funcs = {
 			'/' : cel.Nombre.div,
 			'ou' : ou,
 			'et' : et,
+			'non' : non,
 			'true?' : vrai,
 			'false?' : faux,
 			'erreur' : err,
 			'errtype' : errtype,
 			'lever' : cel.Erreur.lever,
 			'map' : mape,
-			'filter' : filtre
+			'filter' : filtre,
+			'<' : cel.Nombre.inf,
+			'>' : cel.Nombre.sup,
+			'<=' : cel.Nombre.infeg,
+			'>=' : cel.Nombre.supeg
 		}
 
 # Ajouter des nouvelles fonctions
@@ -288,6 +324,7 @@ def addBuiltInFuncs (ctx, dictionnaire):
 	for i in dictionnaire:
 		addBuiltInFunc (ctx, i, dictionnaire[i])
 
+# La grosse fonction !
 def eval (e, contexte):
 	return e.eval (contexte)
 

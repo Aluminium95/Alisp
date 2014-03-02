@@ -12,6 +12,13 @@
 # de parsing ... avec de l'héritage ?
 # Parce que là c'est beaucoup de code 
 # et peu lisible ... 
+# 
+# TODO : créer un fichier de configuration 
+# qui permet de définir les modes de manière 
+# plus simple ! Dans le genre : 
+# 		begin : 
+#		end : 
+#		etc ... 
 #
 # Ajouter un type variable plutôt
 # que garder les chaines nues 

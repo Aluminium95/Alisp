@@ -28,6 +28,10 @@
 # 	en effet l'utilisateur pourrait vouloir 
 # 	conserver le contexte parent et le modifier ?!
 #   
+# TODO:
+# 	Séparer les cellules en plusieurs fichiers dans un 
+# 	seul dossier, avec chaque classe qui a un seul
+# 	et unique fichier pour plus de lisibilité !
 
 from contexte import Contexte
 
@@ -104,8 +108,13 @@ class BuiltInLambda (Lambda):
 		return "<built-in-function {}>".format (self.nom)
 	
 	def run (self, contexte, arguments):
-		args = [ i.eval (contexte) for i in arguments ]
-		return self.f (contexte, *args)
+		try:
+			args = [ i.eval (contexte) for i in arguments ]
+			return self.f (contexte, *args)
+		except Erreur as e:
+			return e
+		except:
+			return Erreur (Atome ("Built-In-Func-Error"), String ("Une erreur est survenue"))
 		
 	
 class Macro (Cellule):
@@ -149,7 +158,14 @@ class BuiltInMacro (Macro):
 		return "<built-in-macro {}>".format (self.nom)
 	
 	def run (self, contexte, arguments):
-		return self.f (contexte, *(arguments))
+		# TODO: rendre les messages plus informatifs ... 
+		try:
+			return self.f (contexte, *(arguments))
+		except Erreur as e:
+			return e
+		except:
+			return Erreur (Atome ("Built-In-Macro-Error"), String ("Une erreur est survenue ..."))
+		
 		
 
 class String (Cellule):
@@ -204,7 +220,7 @@ class Nombre (Cellule):
 		return self
 	
 	def inexact (contexte, elem):
-		return Nombre (self.valeur / self.den)
+		return Nombre (elem.valeur / elem.den)
 	
 	def plus (contexte, *args):
 		s = 0
@@ -252,6 +268,19 @@ class Nombre (Cellule):
 			s *= n.den
 			d *= n.valeur
 		return Nombre (s,d)
+	
+	def inf (contexte, a, b):
+		return Nombre.inexact (contexte, a) < Nombre.inexact (contexte, b)
+	
+	def infeg (contexte, a, b):
+		return Nombre.inexact (contexte, a) <= Nombre.inexact (contexte, b)
+	
+	def sup (contexte, a, b):
+		return Nombre.infeg (contexte, b, a)
+	
+	def supeg (contexte, a, b):
+		return Nombre.inf (contexte, b, a)
+
 		
 	def tp (contexte, variable):
 		if isinstance (variable, Nombre):

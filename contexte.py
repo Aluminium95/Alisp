@@ -34,6 +34,10 @@ class Contexte:
 
 	def get (self, symbole):
 		return self.bindings[symbole]
+		
+	# Définir des manières de mieux faire une 
+	# fusion sans copier intégralement un 
+	# dictionnaire de valeurs 
 	
 	def fusion (self, other):
 		# une petite optimisation : si on ajoute
