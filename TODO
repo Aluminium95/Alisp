@@ -1,0 +1,31 @@
+# TODO
+
+## ARCHITECTURE
+
+### Évaluation partielle
+
+Il faut mettre en place un système d'évaluation partielle
+avant la réelle exécution du programme par l'exécuteur.
+Cette première « passe » permettrait de faire un certain 
+nombre d'optimisations sur le code généré. 
+
+-> Idée : c'est le parser, celui qui passe après le tokenizer 
+		  qui est le plus à même de remplir cette tâche 
+
+
+### Gestion des erreurs 
+
+Il faut permettre de biein gérer les erreurs dans le code
+python : permetter aux gens qui écrivent des libraires externes
+de gérer simplement la remontée d'exceptions ... 
+
+### Structures 
+
+Créer une sous partie Structures, avec des structures 
+de données persistantes.
+
+### Cellule 
+
+Créer un dossier cellule en éclatant le fichier de 400 lignes 
+actuellement utilisé en plusieurs petits fichiers.
+
