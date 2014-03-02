@@ -37,7 +37,7 @@ import cellule as cel
 # C'est juste un travail de conversion 
 # pour le moment ... mais on va peut-être 
 # permettre ici l'expansion de macros, 
-# la gestion des TCO etc ... 
+# la gestion des TCO etc ... comment faire ? 
 
 class Parser:
 	def __init__ (self):
