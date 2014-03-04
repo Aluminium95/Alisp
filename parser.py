@@ -71,4 +71,3 @@ class Parser:
 			return cel.Variable (token)
 		else:
 			raise ValueError ("Token inconnu")
-

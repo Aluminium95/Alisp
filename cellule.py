@@ -457,6 +457,29 @@ class Dico (Cellule):
 		s.dico = d
 		return s 
 	
+	def assoc (contexte, dico, clef, valeur):
+		d = {}
+		r = Dico ([])
+		
+		for a,b in dico.dico.items ():
+			d[a] = b
+
+		d[clef] = valeur
+
+		r.dico = d
+		return r
+	
+	def dessoc (contexte, dico, clef):
+		d = {}
+		r = Dico ([])
+
+		for a,b in dico.dico.items ():
+			if a != clef:
+				d[a] = b
+
+		r.dico = d
+		return r
+	
 	def tp (contexte, variable):
 		if isinstance (variable, Dico):
 			return Atome ("true")

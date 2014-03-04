@@ -35,3 +35,12 @@ de données persistantes.
 Créer un dossier cellule en éclatant le fichier de 400 lignes 
 actuellement utilisé en plusieurs petits fichiers.
 
+## LIBRAIRIE STANDARD
+
+### Itérateurs : Classe abstraite au dessus de Map/Liste/String
+
+-> map
+-> mapi
+-> fold
+-> foldi
+-> etc ... 

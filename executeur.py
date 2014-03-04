@@ -170,6 +170,8 @@ built_in_funcs = {
 			'liste?' : cel.Liste.tp,
 			'null?' : listevide,
 			'dico?'  : cel.Dico.tp,
+			'assoc' : cel.Dico.assoc,
+			'dissoc' : cel.Dico.dessoc,
 			'variable?' : cel.Variable.tp,
 			'+' : cel.Nombre.plus,
 			'-' : cel.Nombre.moins,
