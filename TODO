@@ -44,3 +44,10 @@ actuellement utilisé en plusieurs petits fichiers.
 -> fold
 -> foldi
 -> etc ... 
+
+### Ports : dialogues avec des fichiers / la sortie standard
+
+-> interact
+-> read
+-> write
+-> etc ... 
