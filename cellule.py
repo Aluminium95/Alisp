@@ -114,7 +114,7 @@ class BuiltInLambda (Lambda):
 		except Erreur as e:
 			return e
 		except:
-			return Erreur (Atome ("Built-In-Func-Error"), String ("Une erreur est survenue"))
+			raise Erreur (Atome ("Built-In-Func-Error"), String ("Une erreur est survenue"))
 		
 	
 class Macro (Cellule):
@@ -164,7 +164,7 @@ class BuiltInMacro (Macro):
 		except Erreur as e:
 			return e
 		except:
-			return Erreur (Atome ("Built-In-Macro-Error"), String ("Une erreur est survenue ..."))
+			raise Erreur (Atome ("Built-In-Macro-Error"), String ("Une erreur est survenue ..."))
 		
 		
 
@@ -234,13 +234,13 @@ class Nombre (Cellule):
 				s = s * (k.den) + k.valeur * p # regarder s'il y a des erreurs
 				p *= k.den 
 			else:
-				return Erreur (Atome ("InvalidArgument"), String ("{} n'est pas un nombre".format (k)))
+				raise Erreur (Atome ("InvalidArgument"), String ("{} n'est pas un nombre".format (k)))
 		return Nombre (s,p)
 	
 	def moins (contexte, *args):
 		f = args[0].eval (contexte)
 		if not isinstance (f, Nombre):
-			return Erreur (Atome ("InvalidArgument"), String ("{} n'est pas un nombre".format (s)))
+			raise Erreur (Atome ("InvalidArgument"), String ("{} n'est pas un nombre".format (s)))
 		s = f.valeur 
 		d = f.den
 		for i in args[1:]:
@@ -249,7 +249,7 @@ class Nombre (Cellule):
 				s = s * a.den - a.valeur * d
 				d = d * a.den
 			else:
-				return Erreur (Atome ("InvalidArgument"), String ("{} n'est pas un nombre".format (s)))
+				raise Erreur (Atome ("InvalidArgument"), String ("{} n'est pas un nombre".format (s)))
 		
 		return Nombre (s,d)
 	
@@ -303,7 +303,7 @@ class Variable (Cellule):
 		try:
 			return contexte.get (self)
 		except:
-			return Erreur (Atome ("NotFound"), String ("{} n'est pas défini".format (self.nom)))
+			raise Erreur (Atome ("NotFound"), String ("{} n'est pas défini".format (self.nom)))
 	
 	def tp (contexte, variable):
 		if isinstance (variable, Variable):
@@ -417,7 +417,7 @@ class Liste (Cellule):
 			# et c'est la fonction qui va faire le boulot 
 			return func.run (contexte, self.liste[1:]) # appelle la fonction 
 		else:
-			return Erreur (Atome ("CallError"), String ("Impossible d'appeler {}".format (func)))
+			raise Erreur (Atome ("CallError"), String ("Impossible d'appeler {}".format (func)))
 			
 			
 	def tp (contexte, variable):
@@ -479,6 +479,12 @@ class Dico (Cellule):
 
 		r.dico = d
 		return r
+	
+	def get (contexte, dico, clef):
+		try:
+			return dico.dico[clef]
+		except:
+			raise Erreur (Atome ("InvalidIndex"), String ("La clef n'existe pas dans le dico"))
 	
 	def tp (contexte, variable):
 		if isinstance (variable, Dico):

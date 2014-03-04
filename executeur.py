@@ -142,7 +142,7 @@ built_in_macros = {
 			'tantque' : whileloop,
 			'macro' : createMacro,
 			'def'  : define,
-			'si' : condition,
+			'quand' : condition,
 			'quote' : quote,
 			'match' : match,
 			'let' : let,
@@ -171,6 +171,7 @@ built_in_funcs = {
 			'null?' : listevide,
 			'dico?'  : cel.Dico.tp,
 			'assoc' : cel.Dico.assoc,
+			'item' : cel.Dico.get,
 			'dissoc' : cel.Dico.dessoc,
 			'variable?' : cel.Variable.tp,
 			'+' : cel.Nombre.plus,
@@ -212,5 +213,8 @@ def addBuiltInFuncs (ctx, dictionnaire):
 
 # La grosse fonction !
 def eval (e, contexte):
-	return e.eval (contexte)
+	try:
+		return e.eval (contexte)
+	except Erreur as e:
+		return e
 
